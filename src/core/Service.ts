@@ -11,12 +11,23 @@ export interface IService extends IDisposable
 
 export abstract class Service implements IService
 {
-    protected _requires:Array<new() => IComponent> = new Array<new() => IComponent>()
+    private _dependencies:Array<new() => IComponent> = new Array<new() => IComponent>()
     protected _entities:Array<IEntity> = new Array<IEntity>()
+
+    public addDependency<T extends IComponent>(type: (new () => T)): void
+    {
+        if(!this._dependencies.includes(type))
+        {
+            this._dependencies.push(type)
+
+            let name:string = Object.getPrototypeOf(this).constructor.name;
+            console.log(`INFO: ${type.name} automatically registered by ${name}.`)
+        }
+    }
 
     public addEntity(entity: IEntity): void
     {
-        for(let a of this._requires)
+        for(let a of this._dependencies)
         {
             if(!entity.hasComponent(a))
             {

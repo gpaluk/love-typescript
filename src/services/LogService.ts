@@ -3,7 +3,12 @@ import { Service } from "core/Service";
 
 export class LogService extends Service
 {
-    protected _requires = [NameComponent]
+    constructor()
+    {
+        super()
+
+        this.addDependency(NameComponent)
+    }
 
     public update(): void
     {
