@@ -1,6 +1,6 @@
 {
   "name": "love-typescript",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Entity component system (ECS) for TypeScript",
   "main": "love.js",
   "scripts": {
