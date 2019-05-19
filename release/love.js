@@ -120,7 +120,7 @@ var ServiceRegistry = /** @class */ (function () {
         return this._services.get(type.name);
     };
     ServiceRegistry.hasService = function (type) {
-        return (this._services.has(type.name));
+        return this._services.has(type.name);
     };
     ServiceRegistry.update = function () {
         this._services.forEach(function (value, key) {
@@ -176,7 +176,7 @@ var NameComponent = /** @class */ (function (_super) {
 exports.NameComponent = NameComponent;
 var NameComponentData = /** @class */ (function () {
     function NameComponentData() {
-        this.name = "";
+        this.name = '';
     }
     return NameComponentData;
 }());
@@ -325,10 +325,10 @@ var LogService_1 = __webpack_require__(7);
 var RenderService_1 = __webpack_require__(8);
 var ImageComponent_1 = __webpack_require__(4);
 var entity = new entity_1.Entity();
-entity.addComponent(nameComponent_1.NameComponent).name = "Component 1";
+entity.addComponent(nameComponent_1.NameComponent).name = 'Component 1';
 entity.addService(LogService_1.LogService);
 entity.addService(RenderService_1.RenderService);
-entity.getComponent(ImageComponent_1.ImageComponent).image.src = "assets/game.png";
+entity.getComponent(ImageComponent_1.ImageComponent).image.src = 'assets/game.png';
 ServiceRegistry_1.ServiceRegistry.update();
 
 
@@ -378,7 +378,7 @@ var Entity = /** @class */ (function () {
         return component;
     };
     Entity.prototype.hasComponent = function (type) {
-        return (this._components.get(type.name) != null);
+        return this._components.get(type.name) != null;
     };
     return Entity;
 }());
