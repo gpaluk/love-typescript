@@ -1,12 +1,12 @@
-var path = require("path");
-var webpack = require("webpack");
+var path = require('path')
+var webpack = require('webpack')
 
 module.exports = env => {
     return {
-        entry: path.resolve(__dirname, "./src/love.ts"),
+        entry: path.resolve(__dirname, './src/love.ts'),
         output: {
-            filename: "love.js",
-            path: __dirname + "/dev"
+            filename: 'love.js',
+            path: __dirname + '/dev'
         },
         devServer: {
             disableHostCheck: true
@@ -15,17 +15,16 @@ module.exports = env => {
             rules: [
                 {
                     test: /\.ts$/,
-                    use: [{ loader: "ts-loader" }]
+                    use: [{loader: 'ts-loader'}]
                 }
             ]
         },
         resolve: {
-            extensions: [".ts", ".js", ".json"],
-            modules: ["node_modules", "src"],
+            extensions: ['.ts', '.js', '.json'],
+            modules: ['node_modules', 'src'],
             symlinks: false
         },
-        devtool: "source-map",
-        plugins: [
-        ]
-    };
-};
+        devtool: 'source-map',
+        plugins: []
+    }
+}
