@@ -15,7 +15,7 @@ export interface IEntity {
 export class Entity implements IEntity {
     private _components: Map<string, IComponent> = new Map<string, IComponent>()
 
-    public get components() {
+    public get components(): Map<string, IComponent> {
         return this._components
     }
 
