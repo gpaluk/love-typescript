@@ -1,6 +1,5 @@
-import { IComponent } from "core/Component";
+import {IComponent} from 'core/Component'
 
-export interface IDrawableComponent extends IComponent
-{
-    draw():void
+export interface IDrawableComponent extends IComponent {
+    draw(): void
 }
