@@ -1,5 +1,5 @@
-import {Service} from 'core/Service'
-import {ImageComponent} from 'components/ImageComponent'
+import { Service } from 'core/Service'
+import { ImageComponent } from 'components/ImageComponent'
 
 export class RenderService extends Service {
     constructor() {

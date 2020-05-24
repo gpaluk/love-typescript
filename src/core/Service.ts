@@ -1,20 +1,22 @@
-import {IEntity} from 'core/Entity'
-import {IDisposable} from 'core/IDisposable'
-import {IComponent} from 'core/component'
+import { IEntity } from 'core/Entity'
+import { IDisposable } from 'core/IDisposable'
+import { IComponent } from 'core/component'
+import { EventDispatcher } from './EventDispatcher'
 
 export interface IService extends IDisposable {
     addEntity(entity: IEntity): void
     removeEntity(entity: IEntity): void
     update(): void
+    active: boolean
 }
 
-export abstract class Service implements IService {
+export abstract class Service extends EventDispatcher implements IService {
     private _dependencies: Array<new () => IComponent> = new Array<
         new () => IComponent
     >()
     protected _entities: Array<IEntity> = new Array<IEntity>()
 
-    public addDependency<T extends IComponent>(type: new () => T): void {
+    protected addDependency<T extends IComponent>(type: new () => T): void {
         if (!this._dependencies.includes(type)) {
             this._dependencies.push(type)
 
@@ -23,6 +25,10 @@ export abstract class Service implements IService {
                 `INFO: ${type.name} automatically registered by ${name}.`
             )
         }
+    }
+
+    public get active(): boolean {
+        return
     }
 
     public addEntity(entity: IEntity): void {

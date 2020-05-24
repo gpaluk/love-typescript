@@ -1,6 +1,7 @@
-import {IComponent} from 'core/Component'
-import {ServiceRegistry} from 'core/ServiceRegistry'
-import {IService} from 'core/Service'
+import { IComponent } from 'core/Component'
+import { ServiceRegistry } from 'core/ServiceRegistry'
+import { IService } from 'core/Service'
+import { EventDispatcher } from './EventDispatcher'
 
 export interface IEntity {
     readonly components: Map<string, IComponent>
@@ -12,7 +13,7 @@ export interface IEntity {
     dispose(): void
 }
 
-export class Entity implements IEntity {
+export class Entity extends EventDispatcher implements IEntity {
     private _components: Map<string, IComponent> = new Map<string, IComponent>()
 
     public get components(): Map<string, IComponent> {
@@ -29,6 +30,14 @@ export class Entity implements IEntity {
 
     public addService<T extends IService>(type: new () => T): T {
         return ServiceRegistry.addEntity<T>(this, type)
+    }
+
+    public getService<T extends IService>(type: new () => T): T {
+        return ServiceRegistry.getService<T>(type)
+    }
+
+    public removeService<T extends IService>(type: new () => T): T {
+        return ServiceRegistry.removeEntity<T>(this, type)
     }
 
     public addComponent<T extends IComponent>(type: new () => T): T {

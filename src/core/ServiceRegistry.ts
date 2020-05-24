@@ -1,7 +1,8 @@
-import {IEntity} from 'core/entity'
-import {IService} from './Service'
+import { IEntity } from 'core/entity'
+import { IService } from './Service'
+import { EventDispatcher } from './EventDispatcher'
 
-export class ServiceRegistry {
+export class ServiceRegistry extends EventDispatcher {
     private static _services: Map<string, IService> = new Map<
         string,
         IService
@@ -21,6 +22,18 @@ export class ServiceRegistry {
         return service
     }
 
+    public static removeEntity<T extends IService>(
+        entity: IEntity,
+        type: new () => T
+    ): T {
+        let service: T = this.getService<T>(type) as T
+        if (service) {
+            service.removeEntity(entity)
+        }
+
+        return service
+    }
+
     public static addService<T extends IService>(type: new () => T): T {
         let t: T = new type()
 
@@ -33,13 +46,6 @@ export class ServiceRegistry {
         return t
     }
 
-    public static removeService<T extends IService>(type: new () => T): T {
-        let service: IService = this._services.get(type.name)
-        service.dispose()
-
-        return service as T
-    }
-
     public static getService<T extends IService>(type: new () => T): T {
         return this._services.get(type.name) as T
     }
@@ -49,8 +55,8 @@ export class ServiceRegistry {
     }
 
     public static update(): void {
-        this._services.forEach((value, key) => {
-            value.update()
+        this._services.forEach((service, key) => {
+            service.update()
         })
     }
 }

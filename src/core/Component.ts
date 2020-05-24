@@ -1,12 +1,13 @@
-import {IEntity} from 'core/entity'
-import {IDisposable} from 'core/IDisposable'
+import { IEntity } from 'core/entity'
+import { IDisposable } from 'core/IDisposable'
+import { EventDispatcher } from './EventDispatcher'
 
 export interface IComponent extends IDisposable {
     entity: IEntity
     dispose(): void
 }
 
-export class Component implements IComponent {
+export class Component extends EventDispatcher implements IComponent {
     protected _data: any
     private _entity: IEntity
 

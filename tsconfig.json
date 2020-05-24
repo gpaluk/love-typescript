@@ -1,14 +1,18 @@
 {
-    "include": ["./src/**/*.ts"],
+    "include": [
+        "./src/**/*.ts"
+    ],
     "outDir": "./release",
     "compilerOptions": {
         "sourceMap": true,
         "noImplicitAny": true,
         "module": "commonjs",
-        "target": "es5",
+        "target": "es6",
         "allowJs": true,
         "baseUrl": "src",
         "skipLibCheck": true,
-        "lib":["dom"]
+        "lib": [
+            "dom"
+        ]
     }
 }

@@ -4,7 +4,7 @@
   "description": "Entity component system (ECS) for TypeScript",
   "main": "love.js",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0 --port 3000 --display-modules --content-base dev --inline --hot --mode development --env.ENVIRONMENT=dev",
+    "dev": "webpack-dev-server --config webpack.dev.js --host 127.0.0.1 --port 3000 --display-modules --content-base dev --inline --hot --mode development --env.ENVIRONMENT=dev",
     "release": "webpack --config webpack.release.js --mode production --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
