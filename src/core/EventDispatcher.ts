@@ -1,3 +1,5 @@
+import {Event} from 'events/Event'
+
 export class EventDispatcher {
     private _div: HTMLDivElement
 
@@ -9,11 +11,11 @@ export class EventDispatcher {
     }
 
     public dispatchEvent(type: string): void {
-        let e: CustomEvent = new CustomEvent(type, { detail: this })
+        let e: Event = new Event(type, this)
         this._div.dispatchEvent(e)
     }
 
     public addEventListener(notification: string, callback: Function): void {
-        this._div.addEventListener(notification, (e: CustomEvent) => callback(e), false)
+        this._div.addEventListener(notification, (e: Event) => callback(e), false)
     }
 }

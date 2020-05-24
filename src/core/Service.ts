@@ -1,7 +1,7 @@
-import { IEntity } from 'core/Entity'
-import { IDisposable } from 'core/IDisposable'
-import { IComponent } from 'core/component'
-import { EventDispatcher } from './EventDispatcher'
+import {IEntity} from 'core/Entity'
+import {IDisposable} from 'core/IDisposable'
+import {IComponent} from 'core/component'
+import {EventDispatcher} from './EventDispatcher'
 
 export interface IService extends IDisposable {
     addEntity(entity: IEntity): void
@@ -21,9 +21,7 @@ export abstract class Service extends EventDispatcher implements IService {
             this._dependencies.push(type)
 
             let name: string = Object.getPrototypeOf(this).constructor.name
-            console.log(
-                `INFO: ${type.name} automatically registered by ${name}.`
-            )
+            console.info(`${type.name} automatically registered by ${name}.`)
         }
     }
 

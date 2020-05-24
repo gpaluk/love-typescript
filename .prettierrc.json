@@ -6,7 +6,7 @@
   "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
   "parser": "typescript",
-  "printWidth": 80,
+  "printWidth": 150,
   "proseWrap": "preserve",
   "quoteProps": "as-needed",
   "requirePragma": false,

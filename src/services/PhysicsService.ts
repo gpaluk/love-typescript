@@ -1,5 +1,5 @@
-import { Service } from "core/Service";
-import { SpatialComponent } from "components/SpatialComponent";
+import {Service} from 'core/Service'
+import {SpatialComponent} from 'components/SpatialComponent'
 
 export class PhysicsService extends Service {
     constructor() {

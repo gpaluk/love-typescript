@@ -1,7 +1,10 @@
-import { Component } from 'core/Component'
+import {Component} from 'core/Component'
+import {IData} from 'core/IData'
 
-export class NameComponent extends Component {
-    protected _data: NameComponentData = new NameComponentData()
+export class NameComponent extends Component<NameComponentData> {
+    public constructor() {
+        super(NameComponentData)
+    }
 
     public get name(): string {
         return this._data.name
@@ -12,6 +15,9 @@ export class NameComponent extends Component {
     }
 }
 
-export class NameComponentData {
+export class NameComponentData implements IData {
     public name: string = ''
+    public toString(): string {
+        return `[NameComponentData] Name: ${this.name}`
+    }
 }

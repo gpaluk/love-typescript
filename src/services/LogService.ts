@@ -1,4 +1,4 @@
-import {NameComponent} from 'components/nameComponent'
+import {NameComponent, NameComponentData} from 'components/nameComponent'
 import {Service} from 'core/Service'
 
 export class LogService extends Service {
@@ -10,9 +10,7 @@ export class LogService extends Service {
 
     public update(): void {
         for (let entity of this._entities) {
-            console.log(
-                `LogService:: ${entity.getComponent(NameComponent).name}`
-            )
+            console.log(`LogService:: ${entity.getComponent(NameComponent).name}`)
         }
     }
 }

@@ -1,7 +1,7 @@
-import { IComponent } from 'core/Component'
-import { ServiceRegistry } from 'core/ServiceRegistry'
-import { IService } from 'core/Service'
-import { EventDispatcher } from './EventDispatcher'
+import {IComponent} from 'core/Component'
+import {ServiceRegistry} from 'core/ServiceRegistry'
+import {IService} from 'core/Service'
+import {EventDispatcher} from './EventDispatcher'
 
 export interface IEntity {
     readonly components: Map<string, IComponent>

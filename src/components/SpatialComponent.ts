@@ -1,33 +1,24 @@
-import { Component } from "core/Component";
-import { EventType } from "events/EventType";
+import {Component} from 'core/Component'
+import {IData} from 'core/IData'
 
-export class SpatialComponent extends Component {
-    protected _data: SpatialComponentData = new SpatialComponentData()
-    protected _cache: SpatialComponentData = new SpatialComponentData()
-
-    constructor() {
-        super()
-    }
-
-    public update(): void {
-        console.log(`The spatial component updated:  ${this._data.matrix}`)
-        if (this._data !== this._cache) {
-            this._cache.matrix = this._data.matrix
-            this.dispatchEvent(EventType.DATA_UPDATE)
-        }
+export class SpatialComponent extends Component<SpatialComponentData> {
+    public constructor() {
+        super(SpatialComponentData)
+        this.reset()
     }
 
     public get data(): SpatialComponentData {
-        return this._data
+        return this._data as SpatialComponentData
+    }
+
+    public reset(): void {
+        this.data.matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
     }
 }
 
-export class SpatialComponentData {
-    public matrix: number[][] =
-        [
-            [1, 0, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1]
-        ]
+export class SpatialComponentData implements IData {
+    public matrix: number[][]
+    public toString(): string {
+        return `[SpatialComponentData] matrix: ${this.matrix.toString()}`
+    }
 }

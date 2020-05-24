@@ -1,11 +1,13 @@
 import {Component} from 'core/Component'
 import {IDrawableComponent} from 'groups/IDrawableComponent'
+import {IData} from 'core/IData'
 
-export class ImageComponent extends Component implements IDrawableComponent {
-    protected _data: ImageComponentData = new ImageComponentData()
+export class ImageComponent extends Component<ImageComponentData> implements IDrawableComponent {
+    public static DATA_UPDATED: string = 'ImageComponent_DATA_UPDATED'
 
-    constructor() {
-        super()
+    public constructor() {
+        super(ImageComponentData)
+
         this.image.onload = e => this._onImageLoaded(e)
         this.image.onerror = () => this._onImageError()
     }
@@ -27,6 +29,9 @@ export class ImageComponent extends Component implements IDrawableComponent {
     }
 }
 
-export class ImageComponentData {
+export class ImageComponentData implements IData {
     public image: HTMLImageElement = document.createElement('img')
+    public toString(): string {
+        return `[ImageComponentData] image: ${this.image.src}`
+    }
 }
