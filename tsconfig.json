@@ -4,6 +4,8 @@
     ],
     "outDir": "./release",
     "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "sourceMap": true,
         "noImplicitAny": true,
         "module": "commonjs",

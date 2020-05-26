@@ -1,11 +1,13 @@
 import {IData} from 'core/IData'
 
 export class Event extends CustomEvent<any> {
-    private _dispatcher: any
+    private _dispatcher: string
+    private _data: IData
 
-    constructor(type: string, target: any) {
+    constructor(type: string, dispatcher: string, data?: IData) {
         super(type, {bubbles: false, cancelable: false})
-        this._dispatcher = target
+        this._dispatcher = dispatcher
+        this._data = data
     }
 
     public get dispatcher(): any {
@@ -13,6 +15,6 @@ export class Event extends CustomEvent<any> {
     }
 
     public get data(): IData {
-        return this._dispatcher.data
+        return this._data
     }
 }

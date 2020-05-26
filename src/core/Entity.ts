@@ -2,6 +2,7 @@ import {IComponent} from 'core/Component'
 import {ServiceRegistry} from 'core/ServiceRegistry'
 import {IService} from 'core/Service'
 import {EventDispatcher} from './EventDispatcher'
+import {Registry} from './Registry'
 
 export interface IEntity {
     readonly components: Map<string, IComponent>
@@ -11,10 +12,17 @@ export interface IEntity {
     hasComponent<T extends IComponent>(type: new () => T): boolean
     addService<T extends IService>(type: new () => T): T
     dispose(): void
+    readonly id: string
 }
 
 export class Entity extends EventDispatcher implements IEntity {
     private _components: Map<string, IComponent> = new Map<string, IComponent>()
+
+    constructor(id?: string) {
+        super(id)
+
+        Registry.addEntity(this._id, this)
+    }
 
     public get components(): Map<string, IComponent> {
         return this._components

@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
-    "eslint.provideLintTask": true,
-    "eslint.validate": ["javascript", "typescript"]
+    "eslint.lintTask.enable": true,
+    "eslint.validate": ["javascript", "typescript"],
+    "javascript.implicitProjectConfig.experimentalDecorators": true
 }

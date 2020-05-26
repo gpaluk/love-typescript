@@ -3,8 +3,6 @@ import {IDrawableComponent} from 'groups/IDrawableComponent'
 import {IData} from 'core/IData'
 
 export class ImageComponent extends Component<ImageComponentData> implements IDrawableComponent {
-    public static DATA_UPDATED: string = 'ImageComponent_DATA_UPDATED'
-
     public constructor() {
         super(ImageComponentData)
 

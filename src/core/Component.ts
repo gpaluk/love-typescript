@@ -3,28 +3,42 @@ import {IDisposable} from 'core/IDisposable'
 import {EventDispatcher} from './EventDispatcher'
 import {isEqual, cloneDeep, uniqueId} from 'lodash'
 import {IData} from './IData'
+import {Registry} from './Registry'
+import {EventType} from 'events/EventType'
 
 export interface IComponent extends IDisposable {
     entity: IEntity
     dispose(): void
+    readonly id: string
 }
 
 export abstract class Component<T extends IData> extends EventDispatcher implements IComponent {
     private _entity: IEntity
 
     protected _data: T
-    protected _cache: T
-    protected _bindId: string
+    protected _dataCache: T
+
+    protected _view: HTMLElement
 
     constructor(type: new () => T) {
         super()
         this._data = new type()
-        this._cache = new type()
-        this._bindId = uniqueId(`${type.name}_`)
+        this._dataCache = new type()
+
+        Registry.addComponent(this)
     }
 
-    public get bindId(): string {
-        return this._bindId
+    public dispose(): void {
+        Registry.removeComponent(this)
+        this._entity = null
+    }
+
+    public get registry(): Registry {
+        return Registry
+    }
+
+    public get id(): string {
+        return this._id
     }
 
     public get entity(): IEntity {
@@ -35,14 +49,10 @@ export abstract class Component<T extends IData> extends EventDispatcher impleme
         this._entity = value
     }
 
-    public dispose(): void {
-        this._entity = null
-    }
-
     public update(): void {
-        if (!isEqual(this._cache, this._data)) {
-            this._cache = cloneDeep(this._data)
-            this.dispatchEvent(this._bindId)
+        if (!isEqual(this._dataCache, this._data)) {
+            this._dataCache = cloneDeep(this._data)
+            this.dispatchEvent(EventType.DATA_UPDATED, this._data)
         }
     }
 }

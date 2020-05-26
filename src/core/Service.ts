@@ -2,19 +2,31 @@ import {IEntity} from 'core/Entity'
 import {IDisposable} from 'core/IDisposable'
 import {IComponent} from 'core/component'
 import {EventDispatcher} from './EventDispatcher'
+import {uniqueId} from 'lodash'
+import {Registry} from './Registry'
 
 export interface IService extends IDisposable {
     addEntity(entity: IEntity): void
     removeEntity(entity: IEntity): void
     update(): void
-    active: boolean
+    readonly id: string
 }
 
 export abstract class Service extends EventDispatcher implements IService {
-    private _dependencies: Array<new () => IComponent> = new Array<
-        new () => IComponent
-    >()
+    private _dependencies: Array<new () => IComponent> = new Array<new () => IComponent>()
     protected _entities: Array<IEntity> = new Array<IEntity>()
+    protected _id: string
+
+    constructor() {
+        super()
+        this._id = uniqueId(`Service_`)
+
+        Registry.addService(this)
+    }
+
+    public get id(): string {
+        return this._id
+    }
 
     protected addDependency<T extends IComponent>(type: new () => T): void {
         if (!this._dependencies.includes(type)) {
@@ -23,10 +35,6 @@ export abstract class Service extends EventDispatcher implements IService {
             let name: string = Object.getPrototypeOf(this).constructor.name
             console.info(`${type.name} automatically registered by ${name}.`)
         }
-    }
-
-    public get active(): boolean {
-        return
     }
 
     public addEntity(entity: IEntity): void {
