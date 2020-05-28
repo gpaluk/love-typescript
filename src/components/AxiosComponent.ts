@@ -43,4 +43,7 @@ export class AxiosComponent extends Component<AxiosComponentData> {
 
 export class AxiosComponentData implements IData {
     public response: AxiosResponse
+    public toString(): string {
+        return this.response == null ? 'no data' : JSON.stringify(this.response.data)
+    }
 }

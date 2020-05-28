@@ -8,8 +8,14 @@ import {Registry} from './Registry'
 export interface IService extends IDisposable {
     addEntity(entity: IEntity): void
     removeEntity(entity: IEntity): void
+    hasEntity(entity: IEntity): boolean
     update(): void
     readonly id: string
+    readonly type: string
+    readonly entityCount: number
+    readonly dependencyCount: number
+    readonly entities: Array<IEntity>
+    readonly eventListeners: string[]
 }
 
 export abstract class Service extends EventDispatcher implements IService {
@@ -17,11 +23,34 @@ export abstract class Service extends EventDispatcher implements IService {
     protected _entities: Array<IEntity> = new Array<IEntity>()
     protected _id: string
 
-    constructor() {
-        super()
-        this._id = uniqueId(`Service_`)
+    constructor(id?: string) {
+        super(id)
+
+        if (id == null) {
+            this._id = uniqueId(`Service_`)
+        }
 
         Registry.addService(this)
+    }
+
+    public dispose(): void {
+        this._entities.length = 0
+    }
+
+    public get entities(): Array<IEntity> {
+        return this._entities
+    }
+
+    public get entityCount(): number {
+        return this._entities.length
+    }
+
+    public get dependencies(): Array<new () => IComponent> {
+        return this._dependencies
+    }
+
+    public get dependencyCount(): number {
+        return this._dependencies.length
     }
 
     public get id(): string {
@@ -31,9 +60,7 @@ export abstract class Service extends EventDispatcher implements IService {
     protected addDependency<T extends IComponent>(type: new () => T): void {
         if (!this._dependencies.includes(type)) {
             this._dependencies.push(type)
-
-            let name: string = Object.getPrototypeOf(this).constructor.name
-            console.info(`${type.name} automatically registered by ${name}.`)
+            console.info(`${type.name} automatically registered by ${this.type}.`)
         }
     }
 
@@ -53,9 +80,9 @@ export abstract class Service extends EventDispatcher implements IService {
         }
     }
 
-    abstract update(): void
-
-    public dispose(): void {
-        this._entities.length = 0
+    public hasEntity(entity: IEntity) {
+        return this._entities.includes(entity)
     }
+
+    abstract update(): void
 }

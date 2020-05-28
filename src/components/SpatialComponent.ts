@@ -19,6 +19,6 @@ export class SpatialComponent extends Component<SpatialComponentData> {
 export class SpatialComponentData implements IData {
     public matrix: number[][]
     public toString(): string {
-        return `[SpatialComponentData] matrix: ${this.matrix.toString()}`
+        return `matrix: ${this.matrix.toString()}`
     }
 }

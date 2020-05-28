@@ -1,10 +1,7 @@
-//import {singleton} from 'tsyringe'
-
 import {IEntity} from './entity'
-import {IService, Service} from './Service'
+import {IService} from './Service'
 import {IComponent} from './Component'
 
-//@singleton()
 export class Registry {
     private static _entities: Map<string, IEntity> = new Map<string, IEntity>()
     private static _services: Map<string, IService> = new Map<string, IService>()
@@ -23,6 +20,12 @@ export class Registry {
         return this._entities.get(id)
     }
 
+    public static removeEntity(entity: IEntity): void {
+        if (this._components.has(entity.id)) {
+            this._components.delete(entity.id)
+        }
+    }
+
     public static addComponent(component: IComponent): IComponent {
         if (!this._components.has(component.id)) {
             this._components.set(component.id, component)
@@ -33,7 +36,7 @@ export class Registry {
     }
 
     public static removeComponent(component: IComponent): void {
-        if (!this._components.has(component.id)) {
+        if (this._components.has(component.id)) {
             this._components.delete(component.id)
         }
     }
@@ -49,5 +52,53 @@ export class Registry {
             console.warn(`Facade::addService Service ${service.id} already registered`)
         }
         return service
+    }
+
+    public static getServiceById(id: string): IService {
+        return this._services.get(id)
+    }
+
+    public static removeService(service: IService): void {
+        if (this._services.has(service.id)) {
+            this._services.delete(service.id)
+        }
+    }
+
+    public static auditEntity(entity: IEntity, wrapInfo: boolean = true): void {
+        if (wrapInfo) {
+            console.log('*** LOVE AUDIT START ***')
+        }
+
+        console.log(`${entity.type} id: ${entity.id}`)
+
+        this._services.forEach(service => {
+            if (service.hasEntity(entity)) {
+                console.log(`\tService: ${service.type}\n\t\tid: ${service.id}`)
+            }
+        })
+        entity.components.forEach(component => {
+            let trimmed: string = this.trim(component.data.toString())
+            console.log(`\tComponent: ${component.type}\n\t\tid: ${component.id}\n\t\tdata: ${trimmed}`)
+        })
+        entity.eventListeners.forEach(listener => {
+            console.log(`\tListener: ${listener}`)
+        })
+
+        if (wrapInfo) {
+            console.log('*** LOVE AUDIT END ***')
+        }
+    }
+
+    public static audit(): void {
+        console.log('* AUDIT START *')
+        console.log('============  entities  ============')
+        this._entities.forEach(entity => {
+            this.auditEntity(entity, false)
+        })
+        console.log('* AUDIT END *')
+    }
+
+    public static trim(string: string, length: number = 100): string {
+        return string.length <= length ? string : string.substr(0, length - 3) + '...'
     }
 }

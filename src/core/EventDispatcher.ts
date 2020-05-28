@@ -1,5 +1,4 @@
 import {Event} from 'events/Event'
-import {IEntity} from './entity'
 import {uniqueId} from 'lodash'
 import {Registry} from './Registry'
 import {IData} from './IData'
@@ -7,6 +6,7 @@ import {IData} from './IData'
 export class EventDispatcher {
     private _div: HTMLDivElement
     protected _id: string
+    private _eventListeners: string[] = []
 
     constructor(id?: string) {
         this._div = document.getElementById('love-root') as HTMLDivElement
@@ -14,7 +14,11 @@ export class EventDispatcher {
         this.dispatchEvent = this.dispatchEvent.bind(this)
         this.addEventListener = this.addEventListener.bind(this)
 
-        id == null ? (this._id = uniqueId(`Entity_`)) : (this._id = id)
+        id == null ? (this._id = uniqueId(`EventDispatcher_`)) : (this._id = id)
+    }
+
+    public get eventListeners(): string[] {
+        return this._eventListeners
     }
 
     public dispatchEvent(type: string, data?: IData): void {
@@ -25,8 +29,18 @@ export class EventDispatcher {
     }
 
     public addEventListener(dispatcher: EventDispatcher, notification: string, callback: Function): void {
-        console.log('Adding event listener: ' + dispatcher.id + '/' + notification)
         this._div.addEventListener(`${dispatcher.id}/${notification}`, (e: Event) => callback(e), false)
+        if (!this._eventListeners.includes(notification)) {
+            this._eventListeners.push(`\n\t\ttype: ${dispatcher.type}\n\t\tid: ${dispatcher.id}/${notification}`)
+        }
+    }
+
+    public removeEventListener(dispatcher: EventDispatcher, notification: string, callback: Function): void {
+        this._div.removeEventListener(`${dispatcher.id}/${notification}`, (e: Event) => callback(e), false)
+        if (this._eventListeners.includes(notification)) {
+            let index: number = this._eventListeners.indexOf(`\n\t\ttype:${dispatcher.type}\n\t\tid: ${dispatcher.id}/${notification}`)
+            this._eventListeners = this._eventListeners.splice(index, 1)
+        }
     }
 
     public get registry(): Registry {
@@ -35,5 +49,9 @@ export class EventDispatcher {
 
     public get id(): string {
         return this._id
+    }
+
+    public get type(): string {
+        return Object.getPrototypeOf(this).constructor.name
     }
 }

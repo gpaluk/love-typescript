@@ -5,15 +5,12 @@ import {PhysicsService} from 'services/PhysicsService'
 import {Event} from 'events/Event'
 import {EventType} from 'events/EventType'
 import {Registry} from 'core/Registry'
-import {AxiosComponent, AxiosComponentData} from 'components/AxiosComponent'
+import {AxiosComponent} from 'components/AxiosComponent'
 import {WebService} from 'services/WebService'
 
-let entity: Entity = new Entity()
+let entity: Entity = new Entity('test-entity')
 entity.addService(PhysicsService)
 entity.addService(WebService)
-
-console.log(Registry.getEntityById(entity.id).id)
-
 entity.addEventListener(
     entity.getComponent(SpatialComponent),
     EventType.DATA_UPDATED,
@@ -22,7 +19,8 @@ entity.addEventListener(
 
 let axiosComponent: AxiosComponent = entity.getComponent(AxiosComponent)
 entity.addEventListener(axiosComponent, EventType.DATA_UPDATED, (e: Event) => {
-    console.log((e.data as AxiosComponentData).response.data)
+    // run an audit when the API responce is returned
+    Registry.auditEntity(entity)
 })
 
 axiosComponent.get('todos/' + axiosComponent.nextRecord)

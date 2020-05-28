@@ -3,6 +3,7 @@ import {ServiceRegistry} from 'core/ServiceRegistry'
 import {IService} from 'core/Service'
 import {EventDispatcher} from './EventDispatcher'
 import {Registry} from './Registry'
+import {uniqueId} from 'lodash'
 
 export interface IEntity {
     readonly components: Map<string, IComponent>
@@ -13,6 +14,8 @@ export interface IEntity {
     addService<T extends IService>(type: new () => T): T
     dispose(): void
     readonly id: string
+    readonly type: string
+    readonly eventListeners: string[]
 }
 
 export class Entity extends EventDispatcher implements IEntity {
@@ -20,6 +23,10 @@ export class Entity extends EventDispatcher implements IEntity {
 
     constructor(id?: string) {
         super(id)
+
+        if (id == null) {
+            this._id = uniqueId(`Entity_`)
+        }
 
         Registry.addEntity(this._id, this)
     }
@@ -34,6 +41,7 @@ export class Entity extends EventDispatcher implements IEntity {
         })
 
         this._components = null
+        Registry.removeEntity(this)
     }
 
     public addService<T extends IService>(type: new () => T): T {

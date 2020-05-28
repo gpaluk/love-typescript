@@ -10,6 +10,9 @@ export interface IComponent extends IDisposable {
     entity: IEntity
     dispose(): void
     readonly id: string
+    readonly type: string
+    readonly data: IData
+    readonly eventListeners: string[]
 }
 
 export abstract class Component<T extends IData> extends EventDispatcher implements IComponent {
@@ -20,8 +23,13 @@ export abstract class Component<T extends IData> extends EventDispatcher impleme
 
     protected _view: HTMLElement
 
-    constructor(type: new () => T) {
-        super()
+    constructor(type: new () => T, id?: string) {
+        super(id)
+
+        if (id == null) {
+            this._id = uniqueId(`Component_`)
+        }
+
         this._data = new type()
         this._dataCache = new type()
 
@@ -47,6 +55,10 @@ export abstract class Component<T extends IData> extends EventDispatcher impleme
 
     public set entity(value: IEntity) {
         this._entity = value
+    }
+
+    public get data(): IData {
+        return this._data
     }
 
     public update(): void {

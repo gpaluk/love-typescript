@@ -1,17 +1,11 @@
-import { IEntity } from 'core/entity'
-import { IService } from './Service'
-import { EventDispatcher } from './EventDispatcher'
+import {IEntity} from 'core/entity'
+import {IService} from './Service'
+import {EventDispatcher} from './EventDispatcher'
 
 export class ServiceRegistry extends EventDispatcher {
-    private static _services: Map<string, IService> = new Map<
-        string,
-        IService
-    >()
+    private static _services: Map<string, IService> = new Map<string, IService>()
 
-    public static addEntity<T extends IService>(
-        entity: IEntity,
-        type: new () => T
-    ): T {
+    public static addEntity<T extends IService>(entity: IEntity, type: new () => T): T {
         if (!this.hasService<T>(type)) {
             this.addService(type)
         }
@@ -22,10 +16,7 @@ export class ServiceRegistry extends EventDispatcher {
         return service
     }
 
-    public static removeEntity<T extends IService>(
-        entity: IEntity,
-        type: new () => T
-    ): T {
+    public static removeEntity<T extends IService>(entity: IEntity, type: new () => T): T {
         let service: T = this.getService<T>(type) as T
         if (service) {
             service.removeEntity(entity)
