@@ -10,6 +10,7 @@ import {WebService} from 'services/WebService'
 import {Renderer, pluginscript} from 'Renderer'
 import {Card} from 'Card'
 
+// Add services to entities and dependency components are automatically injects
 let entity: Entity = new Entity('test-entity')
 entity.addService(PhysicsService)
 entity.addService(WebService)
@@ -18,20 +19,28 @@ entity.addEventListener(entity.getComponent(SpatialComponent), EventType.DATA_UP
     Registry.auditEntity(entity)
 })
 
+// Retrieve any entity from the registry
+console.log(Registry.getEntityById('my-card'))
+
+/**
+ * When a component state is updated, a DATA_UPDATED event is automatically dispatched.
+ * We can retireve a component from the Entity also.
+ */
 let axiosComponent: AxiosComponent = entity.getComponent(AxiosComponent)
 entity.addEventListener(axiosComponent, EventType.DATA_UPDATED, (e: Event) => {
-    // run an audit when the API responce is returned
     Registry.auditEntity(entity)
 })
-
 axiosComponent.get('todos/' + axiosComponent.nextRecord)
 
+// Update all services upon clicking the Update button
 document.getElementById('update-button').onclick = () => ServiceRegistry.update()
 
+// Reset the SpatialComponent state and load the next web record
 document.getElementById('reset-button').onclick = () => {
     entity.getComponent(SpatialComponent).reset()
     axiosComponent.get('todos/' + axiosComponent.nextRecord)
-    ServiceRegistry.update()
 }
 
-Renderer.render(<Card name="Hello, World!" />)
+// Create an entity using JSX syntax
+let card: HTMLElement = <Card message="Hello, World!" id="my-card" />
+Renderer.render(card)

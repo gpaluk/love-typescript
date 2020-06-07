@@ -1,27 +1,29 @@
 import {NameComponent} from 'components/NameComponent'
 import {pluginscript} from 'Renderer'
-import {AxiosComponent} from 'components/AxiosComponent'
+import {AxiosComponent, AxiosComponentData} from 'components/AxiosComponent'
 import {EventType} from 'events/EventType'
 import {Entity} from 'core/entity'
 import {Event} from 'events/Event'
 import {AxiosResponse} from 'axios'
 import {Registry} from 'core/Registry'
+import {WebService} from 'services/WebService'
 
-export interface IProps {
-    readonly name?: string
-    readonly color?: string
+export interface IParams {
+    readonly id?: string
+    readonly message?: string
 }
 
 export class Card extends Entity {
     private _axios: AxiosComponent
 
-    constructor(props: IProps) {
-        super()
+    constructor(props: IParams) {
+        super(props.id)
 
-        this.addComponent(NameComponent).name = props.name
-        this._axios = this.addComponent(AxiosComponent)
+        this.addService(WebService)
+        this.addComponent(NameComponent).name = props.message
+        this._axios = this.getComponent(AxiosComponent)
         this.addEventListener(this._axios, EventType.DATA_UPDATED, (e: Event) => {
-            let response = (e.data as AxiosResponse).data
+            let response = (e.data as AxiosComponentData).response.data
             console.log('Load complete')
             console.log(response)
             Registry.auditEntity(this)
