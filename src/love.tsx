@@ -7,15 +7,16 @@ import {EventType} from 'events/EventType'
 import {Registry} from 'core/Registry'
 import {AxiosComponent} from 'components/AxiosComponent'
 import {WebService} from 'services/WebService'
+import {Renderer, pluginscript} from 'Renderer'
+import {Card} from 'Card'
 
 let entity: Entity = new Entity('test-entity')
 entity.addService(PhysicsService)
 entity.addService(WebService)
-entity.addEventListener(
-    entity.getComponent(SpatialComponent),
-    EventType.DATA_UPDATED,
-    (e: Event) => (document.getElementById('data').innerHTML = e.data.toString())
-)
+entity.addEventListener(entity.getComponent(SpatialComponent), EventType.DATA_UPDATED, (e: Event) => {
+    document.getElementById('data').innerHTML = e.data.toString()
+    Registry.auditEntity(entity)
+})
 
 let axiosComponent: AxiosComponent = entity.getComponent(AxiosComponent)
 entity.addEventListener(axiosComponent, EventType.DATA_UPDATED, (e: Event) => {
@@ -32,3 +33,5 @@ document.getElementById('reset-button').onclick = () => {
     axiosComponent.get('todos/' + axiosComponent.nextRecord)
     ServiceRegistry.update()
 }
+
+Renderer.render(<Card name="Hello, World!" />)

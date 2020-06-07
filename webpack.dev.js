@@ -1,9 +1,10 @@
 var path = require('path')
 var webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = env => {
     return {
-        entry: path.resolve(__dirname, './src/love.ts'),
+        entry: path.resolve(__dirname, './src/love.tsx'),
         output: {
             filename: 'love.js',
             path: __dirname + '/dev'
@@ -14,17 +15,17 @@ module.exports = env => {
         module: {
             rules: [
                 {
-                    test: /\.ts$/,
+                    test: /\.tsx?$/,
                     use: [{loader: 'ts-loader'}]
                 }
             ]
         },
         resolve: {
-            extensions: ['.ts', '.js', '.json'],
+            extensions: ['.tsx', '.ts', '.js', '.json'],
             modules: ['node_modules', 'src'],
             symlinks: false
         },
         devtool: 'source-map',
-        plugins: []
+        plugins: [new CopyWebpackPlugin([{from: './src/css/', to: './css/'}])]
     }
 }

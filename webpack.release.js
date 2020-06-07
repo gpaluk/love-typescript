@@ -34,12 +34,7 @@ module.exports = env => {
                     include: /\.min\.js$/,
                     minify(file, sourceMap) {
                         const extractedComments = []
-                        const {
-                            error,
-                            map,
-                            code,
-                            warnings
-                        } = require('uglify-js').minify(file, {
+                        const {error, map, code, warnings} = require('uglify-js').minify(file, {
                             warnings: false,
                             compress: {
                                 sequences: true,
@@ -61,6 +56,6 @@ module.exports = env => {
                 })
             ]
         },
-        plugins: [new CopyWebpackPlugin([{from: 'dev/assets', to: 'assets'}])]
+        plugins: [new CopyWebpackPlugin([{from: 'assets', to: 'assets'}])]
     }
 }

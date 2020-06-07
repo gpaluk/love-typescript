@@ -21,8 +21,8 @@ export class Registry {
     }
 
     public static removeEntity(entity: IEntity): void {
-        if (this._components.has(entity.id)) {
-            this._components.delete(entity.id)
+        if (this._entities.has(entity.id)) {
+            this._entities.delete(entity.id)
         }
     }
 

@@ -19,7 +19,7 @@ export interface IEntity {
 }
 
 export class Entity extends EventDispatcher implements IEntity {
-    private _components: Map<string, IComponent> = new Map<string, IComponent>()
+    protected _components: Map<string, IComponent> = new Map<string, IComponent>()
 
     constructor(id?: string) {
         super(id)

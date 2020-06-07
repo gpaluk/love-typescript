@@ -4,9 +4,10 @@
   "description": "Entity component system (ECS) for TypeScript",
   "main": "love.js",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.dev.js --host 127.0.0.1 --port 3000 --display-modules --content-base dev --inline --hot --mode development --env.ENVIRONMENT=dev",
+    "dev": "npm run build:css && webpack-dev-server --config webpack.dev.js --host 127.0.0.1 --port 3000 --display-modules --content-base dev --inline --hot --mode development --env.ENVIRONMENT=dev",
     "release": "webpack --config webpack.release.js --mode production --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "postcss src/css/tailwind.css -o src/css/main.css"
   },
   "repository": {
     "type": "git",
@@ -39,12 +40,15 @@
     "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.152",
     "@typescript-eslint/parser": "^1.9.0",
+    "autoprefixer": "^9.8.0",
     "axios": "^0.19.2",
     "copy-webpack-plugin": "^5.0.3",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "lodash": "^4.17.15",
+    "postcss-cli": "^7.1.1",
     "prettier-eslint": "^8.8.2",
+    "tailwindcss": "^1.4.6",
     "uglify-js": "^3.5.13"
   }
 }
