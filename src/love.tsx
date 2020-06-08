@@ -19,9 +19,6 @@ entity.addEventListener(entity.getComponent(SpatialComponent), EventType.DATA_UP
     Registry.auditEntity(entity)
 })
 
-// Retrieve any entity from the registry
-console.log(Registry.getEntityById('my-card'))
-
 /**
  * When a component state is updated, a DATA_UPDATED event is automatically dispatched.
  * We can retireve a component from the Entity also.
@@ -44,3 +41,6 @@ document.getElementById('reset-button').onclick = () => {
 // Create an entity using JSX syntax
 let card: HTMLElement = <Card message="Hello, World!" id="my-card" />
 Renderer.render(card)
+
+// Retrieve any entity from the registry
+console.log(Registry.getEntityById('my-card'))
