@@ -1,4 +1,5 @@
 import {uniqueId} from 'lodash'
+import {Registry} from 'core/Registry'
 
 export function pluginscript(nodeName: string, attributes: any[], ...children: HTMLElement[]): any {
     children = [].concat(...children)
@@ -6,18 +7,17 @@ export function pluginscript(nodeName: string, attributes: any[], ...children: H
 }
 
 export class Renderer {
-    public static render(vdom: any): HTMLElement {
-        let component = vdom.nodeName.prototype
-        let a = new component.constructor(vdom.attributes)
+    public static render(vdom: any, element?: HTMLElement): HTMLElement {
+        let entity = vdom.nodeName.prototype
 
-        let data: any = a.render()
-        let htmlElement: HTMLElement = this._render(data)
+        if (entity) {
+            // Registry.getEntityById(vdom.attributes.id) === undefined
 
-        return htmlElement
-    }
-
-    public static invoke(id: string): void {
-        let keypair: any = this._evt.get(id)
+            let a = new entity.constructor(vdom.attributes)
+            let data: any = a.render()
+            return this._render(data, element)
+        }
+        return this._render(vdom, element)
     }
 
     private static _evt: Map<string, Function> = new Map()
@@ -26,7 +26,7 @@ export class Renderer {
         return uniqueId('evt_')
     }
 
-    private static _render(vdom: any): HTMLElement {
+    private static _render(vdom: any, element?: HTMLElement): HTMLElement {
         let dom: HTMLElement = document.createElement(vdom.nodeName)
 
         if (vdom.attributes != null) {
@@ -74,12 +74,25 @@ export class Renderer {
         for (let child of vdom.children) {
             if (typeof child === 'string') {
                 dom.appendChild(document.createTextNode(child))
+            } else if (typeof child === 'number') {
+                dom.appendChild(document.createTextNode(child.toString()))
+            } else if (typeof child === 'object') {
+                if (typeof child.nodeName === 'function') {
+                    dom.appendChild(this.render(child, element))
+                } else {
+                    dom.appendChild(this._render(child))
+                }
             } else {
                 dom.appendChild(this._render(child))
             }
         }
 
-        document.body.appendChild(dom)
+        if (element) {
+            element.innerHTML = dom.innerHTML
+        } else {
+            document.body.appendChild(dom)
+        }
+
         return dom
     }
 }
