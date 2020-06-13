@@ -1,3 +1,5 @@
+import {uniqueId} from 'lodash'
+
 export function pluginscript(nodeName: string, attributes: any[], ...children: HTMLElement[]): any {
     children = [].concat(...children)
     return {nodeName, attributes, children}
@@ -14,12 +16,58 @@ export class Renderer {
         return htmlElement
     }
 
+    public static invoke(id: string): void {
+        let keypair: any = this._evt.get(id)
+    }
+
+    private static _evt: Map<string, Function> = new Map()
+
+    private static rand(): string {
+        return uniqueId('evt_')
+    }
+
     private static _render(vdom: any): HTMLElement {
         let dom: HTMLElement = document.createElement(vdom.nodeName)
 
         if (vdom.attributes != null) {
             for (let [key, value] of Object.entries(vdom.attributes)) {
-                dom.setAttribute(key, vdom.attributes[key])
+                switch (key) {
+                    case 'onabort':
+                    case 'afterprint':
+                    case 'animationend':
+                    case 'onanimationiteration':
+                    case 'onanimationstart':
+                    case 'onbeforeprint':
+                    case 'onbeforeunload':
+                    case 'onblur':
+                    case 'oncanplay':
+                    case 'oncanplaythrough':
+                    case 'onchange':
+                    case 'onclick':
+                    case 'oncontextmenu':
+                    case 'oncopy':
+                    case 'oncut':
+
+                    case 'onmousedown':
+                    case 'onmouseenter':
+                    case 'onmouseleave':
+                    case 'onmousemove':
+                    case 'onmouseover':
+                    case 'onmouseout':
+                    case 'onmouseup':
+                        let rand: string = this.rand()
+
+                        this._evt.set(rand, vdom.attributes['onclick'])
+
+                        dom.setAttribute(key, `${rand}(...arguments)`)
+
+                        window[rand] = function() {
+                            vdom.attributes[key](...arguments)
+                        }
+                        break
+                    default:
+                        dom.setAttribute(key, vdom.attributes[key])
+                }
             }
         }
 
