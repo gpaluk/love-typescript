@@ -1,6 +1,7 @@
 import {Component} from 'core/Component'
 import {IData} from 'core/IData'
 import axios, {AxiosResponse, AxiosInstance} from 'axios'
+import {EventType} from 'events/EventType'
 
 export class AxiosComponent extends Component<AxiosComponentData> {
     private _axios: AxiosInstance
@@ -31,6 +32,8 @@ export class AxiosComponent extends Component<AxiosComponentData> {
         try {
             let response: AxiosResponse = await this._axios.get(endpoint)
             this.data.response = response
+
+            this.dispatchEvent(EventType.DATA_UPDATED, this.data)
         } catch (e) {
             console.error('An error occurred')
         }

@@ -5,7 +5,7 @@ import {EventDispatcher} from './EventDispatcher'
 import {Registry} from './Registry'
 import {uniqueId} from 'lodash'
 
-export interface IEntity {
+export interface IEntity extends EventDispatcher {
     readonly components: Map<string, IComponent>
     addComponent<T extends IComponent>(type: new () => T): T
     getComponent<T extends IComponent>(type: new () => T): T

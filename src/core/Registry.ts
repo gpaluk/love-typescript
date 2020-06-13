@@ -11,7 +11,7 @@ export class Registry {
         if (!this._entities.has(id)) {
             this._entities.set(id, entity)
         } else {
-            console.warn('Facade::addEntity Entity already registered')
+            console.warn('Facade::addEntity Entity already registered: ' + id)
         }
         return entity
     }
@@ -30,7 +30,7 @@ export class Registry {
         if (!this._components.has(component.id)) {
             this._components.set(component.id, component)
         } else {
-            console.warn('Facade::addComponent Component already registered')
+            console.warn('Facade::addComponent Component already registered: ' + component.id)
         }
         return component
     }
