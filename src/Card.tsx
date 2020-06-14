@@ -45,9 +45,9 @@ export class Card extends Entity {
 
     public render(): HTMLElement {
         return (
-            <div class="p-4">
+            <div>
+                <Header id="header" />
                 <div class="bg-gray-800 rounded-lg p-6 m-4">
-                    <Header id="header" />
                     <h1 class="text-white text-2xl">{this.getComponent(NameComponent).name}</h1>
                     <ul class="list-disc p-4">
                         <li class="text-white">Welcome</li>
