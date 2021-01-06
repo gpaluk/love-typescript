@@ -43,7 +43,7 @@
     "@types/lodash": "^4.14.152",
     "@typescript-eslint/parser": "^1.9.0",
     "autoprefixer": "^9.8.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "copy-webpack-plugin": "^5.0.3",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
