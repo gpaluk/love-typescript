@@ -47,7 +47,7 @@
     "copy-webpack-plugin": "^5.0.3",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "postcss-cli": "^7.1.1",
     "prettier-eslint": "^8.8.2",
     "tailwindcss": "^1.4.6",
